@@ -5,66 +5,12 @@ import (
 	"time"
 
 	"github.com/hadrianl/ibapi"
+	"lighthoseCapital/wrapper"
 )
 
-type Wrapper struct {
-	ibapi.Wrapper
-	debugMode bool
-}
-
-func (w *Wrapper) TickSize(reqID int64, tickType int64, size int64) {
-	if w.debugMode {
-		w.Wrapper.TickSize(reqID, tickType, size)
-	}
-}
-
-func (w *Wrapper) MarketDataType(reqID int64, marketDataType int64) {
-	if w.debugMode {
-		w.Wrapper.MarketDataType(reqID, marketDataType)
-	}
-}
-
-func (w *Wrapper) TickReqParams(tickerID int64, minTick float64, bboExchange string, snapshotPermissions int64) {
-	if w.debugMode {
-		w.Wrapper.TickReqParams(tickerID, minTick, bboExchange, snapshotPermissions)
-	}
-}
-
-func (w *Wrapper) ContractDetails(reqID int64, conDetails *ibapi.ContractDetails) {
-	if w.debugMode {
-		w.Wrapper.ContractDetails(reqID, conDetails)
-	}
-}
-
-func (w *Wrapper) ContractDetailsEnd(reqID int64) {
-	if w.debugMode {
-		w.Wrapper.ContractDetailsEnd(reqID)
-	}
-}
-
-func (w *Wrapper) Error(reqID int64, errCode int64, errString string) {
-	if w.debugMode {
-		w.Wrapper.Error(reqID, errCode, errString)
-	}
-}
-
-func (w *Wrapper) TickPrice(reqID int64, tickType int64, price float64, attrib ibapi.TickAttrib) {
-	if tickType == 37 {
-		fmt.Printf("Calculated price: %.2f EUR\n", price)
-	} else if tickType == 67 {
-		fmt.Printf("Last ask price: %.2f EUR\n", price)
-	} else if tickType == 66 {
-		fmt.Printf("Last bid price: %.2f EUR\n", price)
-	} else {
-		if w.debugMode {
-			w.Wrapper.TickPrice(reqID, tickType, price, attrib)
-		}
-	}
-}
-
 func main() {
-	w := &Wrapper{
-		debugMode: false,
+	w := &wrapper.Wrapper{
+		DebugMode: false,
 	}
 
 	// internal api log is zap log, you could use GetLogger to get the logger
